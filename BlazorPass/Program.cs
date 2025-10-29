@@ -1,10 +1,16 @@
+using BlazorPass.Hubs;
+using BlazorPass.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
+
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddHttpClient();
+builder.Services.AddServerSideBlazor();
+builder.Services.AddSignalR();
+builder.Services.AddScoped<PasswordEntryService>();
 
 // Configure EF Core with PostgreSQL
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
@@ -29,11 +35,15 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
+
+app.MapBlazorHub();
+app.MapFallbackToPage("/_Host");
+app.MapHub<TableUpdateHub>("/tableupdatehub");
+
 app.MapGet("/", context => {
 	context.Response.Redirect("/locpass");
 	return Task.CompletedTask;
 });
-
 
 app.UseAuthorization();
 app.MapStaticAssets();
