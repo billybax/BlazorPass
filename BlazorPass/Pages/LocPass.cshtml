@@ -35,3 +35,32 @@ else
  </tbody>
  </table>
 }
+
+<!-- добавляем SignalR клиент -->
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.1/signalr.min.js"></script>
+    <script>
+        const connection = new signalR.HubConnectionBuilder()
+            .withUrl("/tableUpdateHub")
+            .build();
+
+        connection.on("RefreshTable", function () {
+            // Обновляем только таблицу, а не всю страницу
+            location.reload();
+
+            // ИЛИ более интеллектуально - делаем AJAX запрос за данными
+            // refreshTableData();
+        });
+
+        connection.start().catch(err => console.error(err.toString()));
+
+        // Функция для AJAX обновления данных (опционально)
+        function refreshTableData() {
+            fetch('?handler=TableData')
+                .then(response => response.text())
+                .then(html => {
+                    document.getElementById('passwordTable').innerHTML = html;
+                });
+        }
+    </script>
+}

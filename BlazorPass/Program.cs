@@ -1,4 +1,4 @@
-using BlazorPass.Hubs;
+﻿using BlazorPass.Hubs;
 using BlazorPass.Services;
 using Microsoft.EntityFrameworkCore;
 
@@ -36,9 +36,9 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
 
-app.MapBlazorHub();
-app.MapFallbackToPage("/_Host");
-app.MapHub<TableUpdateHub>("/tableupdatehub");
+app.MapBlazorHub(); // ✅ Базовый хаб для Blazor
+app.MapHub<TableUpdateHub>("/tableupdatehub"); // ✅ Ваш кастомный хаб для обновлений
+app.MapFallbackToPage("/locpass"); // ✅ Точка входа в приложение
 
 app.MapGet("/", context => {
 	context.Response.Redirect("/locpass");
