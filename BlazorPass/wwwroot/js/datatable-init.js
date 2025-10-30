@@ -12,7 +12,8 @@ $(document).ready(function() {
             {
                 data: 'id',
                 render: function (data, type, row) {
-                    return '<a href="/EditLocPass?id=' + data + '">Edit</a>';
+                    // Generate the link in the format /EditLocPass/123
+                    return '<a href="/EditLocPass/' + data + '">Edit</a>';
                 },
                 orderable: false
             }
