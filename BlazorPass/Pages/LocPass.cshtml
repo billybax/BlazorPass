@@ -5,38 +5,17 @@
 
 <p><a asp-page="/EditLocPass" asp-route-id="0">Create new</a></p>
 
-@if (Model.Passes == null)
-{
- <p>Loading...</p>
-}
-else
-{
- <table id="locpassTable" class="table-excel">
- <thead>
- <tr>
- <th style="width:20%">Resource</th>
- <th style="width:20%">Login</th>
- <th style="width:20%">Password</th>
- <th>Comment</th>
- <th style="width:10%"></th>
- </tr>
- </thead>
- <tbody>
- @foreach (var i in Model.Passes)
- {
- <tr>
- <td>@i.ResName</td>
- <td>@i.Login</td>
- <td>@i.Pass</td>
- <td>@i.Comment</td>
- <td><a asp-page="/EditLocPass" asp-route-id="@i.Id">Edit</a></td>
- </tr>
- }
- </tbody>
- </table>
-}
+<div id="tableContainer">
+    @if (Model.Passes == null)
+    {
+        <p>Loading...</p>
+    }
+    else
+    {
+        <partial name="Shared/_PassTablePartial" model="Model.Passes" />
+    }
+</div>
 
-<!-- добавляем SignalR клиент -->
 @section Scripts {
     <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.1/signalr.min.js"></script>
     <script>
@@ -45,21 +24,16 @@ else
             .build();
 
         connection.on("RefreshTable", function () {
-            // Обновляем только таблицу, а не всю страницу
-            location.reload();
-
-            // ИЛИ более интеллектуально - делаем AJAX запрос за данными
-            // refreshTableData();
+            refreshTableData();
         });
 
         connection.start().catch(err => console.error(err.toString()));
 
-        // Функция для AJAX обновления данных (опционально)
         function refreshTableData() {
             fetch('?handler=TableData')
                 .then(response => response.text())
                 .then(html => {
-                    document.getElementById('passwordTable').innerHTML = html;
+                    document.getElementById('tableContainer').innerHTML = html;
                 });
         }
     </script>

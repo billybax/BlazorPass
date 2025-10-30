@@ -1,0 +1,25 @@
+@model IEnumerable<LocPass>
+
+<table id="locpassTable" class="table-excel">
+    <thead>
+        <tr>
+            <th style="width:20%">Resource</th>
+            <th style="width:20%">Login</th>
+            <th style="width:20%">Password</th>
+            <th>Comment</th>
+            <th style="width:10%"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var i in Model)
+        {
+            <tr>
+                <td>@i.ResName</td>
+                <td>@i.Login</td>
+                <td>@i.Pass</td>
+                <td>@i.Comment</td>
+                <td><a asp-page="/EditLocPass" asp-route-id="@i.Id">Edit</a></td>
+            </tr>
+        }
+    </tbody>
+</table>
