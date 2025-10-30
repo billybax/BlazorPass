@@ -39,7 +39,6 @@ namespace BlazorPass.Services
             _context.Entry(entry).State = EntityState.Modified;
             await _context.SaveChangesAsync();
             // Отправляем уведомление после обновления
-            Debugger.Break(); // <-- Точка останова добавлена здесь
             await _hubContext.Clients.All.SendAsync("RefreshTable");
         }
 
