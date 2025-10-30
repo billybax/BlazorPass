@@ -10,12 +10,8 @@ $(document).ready(function() {
             { data: 'pass' },
             { data: 'comment' },
             {
-                data: 'id', // Let's keep this as 'id' for now
+                data: 'id',
                 render: function (data, type, row) {
-                    // Log the entire row object to the console to inspect its structure
-                    console.log(row);
-                    
-                    // Attempt to create the link (will still be broken)
                     return '<a href="/EditLocPass?id=' + data + '">Edit</a>';
                 },
                 orderable: false
