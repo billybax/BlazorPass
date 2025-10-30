@@ -1,4 +1,4 @@
-﻿using BlazorPass.Hubs;
+using BlazorPass.Hubs;
 using BlazorPass.Services;
 using Microsoft.EntityFrameworkCore;
 
@@ -38,7 +38,6 @@ app.UseRouting();
 
 app.MapBlazorHub(); // ✅ Базовый хаб для Blazor
 app.MapHub<TableUpdateHub>("/tableupdatehub"); // ✅ Ваш кастомный хаб для обновлений
-app.MapFallbackToPage("/locpass"); // ✅ Точка входа в приложение
 
 app.MapGet("/", context => {
 	context.Response.Redirect("/locpass");
@@ -48,5 +47,8 @@ app.MapGet("/", context => {
 app.UseAuthorization();
 app.MapStaticAssets();
 app.MapRazorPages().WithStaticAssets();
+
+// Fallback route should be the last one
+app.MapFallbackToPage("/locpass"); 
 
 app.Run();
