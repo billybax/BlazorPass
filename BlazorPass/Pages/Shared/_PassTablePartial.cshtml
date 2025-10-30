@@ -11,15 +11,6 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var i in Model)
-        {
-            <tr>
-                <td>@i.ResName</td>
-                <td>@i.Login</td>
-                <td>@i.Pass</td>
-                <td>@i.Comment</td>
-                <td><a asp-page="/EditLocPass" asp-route-id="@i.Id">Edit</a></td>
-            </tr>
-        }
+        @* The table body will be populated by DataTables via an AJAX call *@
     </tbody>
 </table>

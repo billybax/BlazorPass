@@ -27,10 +27,10 @@ public class LocPassModel : PageModel
         Passes = await _db.LocPasses.OrderBy(l => l.ResName).ToArrayAsync();
     }
 
-    public async Task<PartialViewResult> OnGetTableDataAsync()
+    public async Task<JsonResult> OnGetTableDataAsync()
     {
         var passes = await _db.LocPasses.OrderBy(l => l.ResName).ToArrayAsync();
-        return Partial("Shared/_PassTablePartial", passes);
+        return new JsonResult(new { data = passes });
     }
 
     public async Task<IActionResult> OnPostAddAsync(LocPass entry)

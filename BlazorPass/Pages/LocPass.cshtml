@@ -6,14 +6,7 @@
 <p><a asp-page="/EditLocPass" asp-route-id="0">Create new</a></p>
 
 <div id="tableContainer">
-    @if (Model.Passes == null)
-    {
-        <p>Loading...</p>
-    }
-    else
-    {
-        <partial name="Shared/_PassTablePartial" model="Model.Passes" />
-    }
+    <partial name="Shared/_PassTablePartial" />
 </div>
 
 @section Scripts {
@@ -25,28 +18,10 @@
 
         connection.on("RefreshTable", function () {
             console.log("Received RefreshTable message from server.");
-            refreshTableData();
+            var table = $('#locpassTable').DataTable();
+            table.ajax.reload();
         });
 
         connection.start().catch(err => console.error(err.toString()));
-
-        function refreshTableData() {
-            fetch('?handler=TableData')
-                .then(response => response.text())
-                .then(html => {
-                    // Create a temporary DOM element to hold the new HTML
-                    const tempDiv = document.createElement('div');
-                    tempDiv.innerHTML = html;
-                    // Find the new table body from the fetched HTML
-                    const newTbody = tempDiv.querySelector('#locpassTable tbody');
-                    if (newTbody) {
-                        // Find the existing table body and replace it
-                        const existingTbody = document.querySelector('#locpassTable tbody');
-                        if (existingTbody) {
-                            existingTbody.innerHTML = newTbody.innerHTML;
-                        }
-                    }
-                });
-        }
     </script>
 }
