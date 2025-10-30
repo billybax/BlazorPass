@@ -3,7 +3,7 @@
 
 <h1>@(Model.IsNew ? "Create Pass" : "Edit Pass")</h1>
 
-<form method="post">
+<form method="post" id="editForm">
  <input asp-for="Item.Id" type="hidden" />
  <div class="mb-3">
  <label asp-for="Item.ResName" class="form-label"></label>
@@ -24,3 +24,29 @@
  <button type="submit" class="btn btn-primary">Save</button>
  <a asp-page="/LocPass" class="btn btn-secondary">Cancel</a>
 </form>
+
+@section Scripts {
+    <script>
+        $(function() {
+            $('#editForm').on('submit', function(e) {
+                e.preventDefault(); // Prevent the default form submission
+
+                var form = $(this);
+                $.ajax({
+                    type: form.attr('method'),
+                    url: form.attr('action'),
+                    data: form.serialize(),
+                    success: function(response) {
+                        if (response.success) {
+                            // Redirect to the URL provided by the server
+                            window.location.href = response.redirectUrl;
+                        } else {
+                            // Handle server-side validation errors if needed
+                            alert('An error occurred.');
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+}

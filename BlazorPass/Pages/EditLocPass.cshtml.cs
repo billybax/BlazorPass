@@ -43,6 +43,7 @@ public class EditLocPassModel : PageModel
             await _passwordService.UpdatePasswordEntryAsync(Item);
         }
 
-        return LocalRedirect("~/locpass");
+        // Instead of a redirect, return a JSON success response
+        return new JsonResult(new { success = true, redirectUrl = Url.Page("/LocPass") });
     }
 }
