@@ -14,6 +14,9 @@ public class EditLocPassModel : PageModel
     [BindProperty]
     public LocPass Item { get; set; } = new LocPass();
 
+    [BindProperty(SupportsGet = true)]
+    public string? ReturnUrl { get; set; }
+
     public bool IsNew => Item.Id == 0;
 
     public async Task<IActionResult> OnGetAsync(int id)
@@ -43,7 +46,10 @@ public class EditLocPassModel : PageModel
             await _passwordService.UpdatePasswordEntryAsync(Item);
         }
 
-        // Instead of a redirect, return a JSON success response
-        return new JsonResult(new { success = true, redirectUrl = Url.Page("/LocPass") });
+        var redirectUrl = !string.IsNullOrEmpty(ReturnUrl) && Url.IsLocalUrl(ReturnUrl) 
+            ? ReturnUrl 
+            : Url.Page("/LocPass");
+
+        return new JsonResult(new { success = true, redirectUrl });
     }
 }
