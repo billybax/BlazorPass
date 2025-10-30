@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.SignalR; 
 using BlazorPass.Hubs; 
+using System.Diagnostics;
 
 namespace BlazorPass.Services
 {
@@ -38,6 +39,7 @@ namespace BlazorPass.Services
             _context.Entry(entry).State = EntityState.Modified;
             await _context.SaveChangesAsync();
             // Отправляем уведомление после обновления
+            Debugger.Break(); // <-- Точка останова добавлена здесь
             await _hubContext.Clients.All.SendAsync("RefreshTable");
         }
 
