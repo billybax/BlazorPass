@@ -24,8 +24,6 @@
             .build();
 
         connection.on("RefreshTable", function () {
-            console.log("Received RefreshTable message from server.");
-            debugger;
             refreshTableData();
         });
 
