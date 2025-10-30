@@ -30,8 +30,7 @@ namespace BlazorPass.Services
             _context.LocPasses.Add(entry);
             await _context.SaveChangesAsync();
             // Отправляем уведомление после добавления
-            await _hubContext.Clients.All.SendAsync("ReceiveTableUpdate", "Новая запись добавлена.");
-            await _hubContext.Clients.All.SendAsync("ReceivePasswordEntryUpdate", entry.Id, "added");
+            await _hubContext.Clients.All.SendAsync("RefreshTable");
         }
 
         public async Task UpdatePasswordEntryAsync(LocPass entry)
@@ -39,8 +38,7 @@ namespace BlazorPass.Services
             _context.Entry(entry).State = EntityState.Modified;
             await _context.SaveChangesAsync();
             // Отправляем уведомление после обновления
-            await _hubContext.Clients.All.SendAsync("ReceiveTableUpdate", $"Запись {entry.Id} обновлена.");
-            await _hubContext.Clients.All.SendAsync("ReceivePasswordEntryUpdate", entry.Id, "updated");
+            await _hubContext.Clients.All.SendAsync("RefreshTable");
         }
 
         public async Task DeletePasswordEntryAsync(int id)
@@ -51,8 +49,7 @@ namespace BlazorPass.Services
                 _context.LocPasses.Remove(entry);
                 await _context.SaveChangesAsync();
                 // Отправляем уведомление после удаления
-                await _hubContext.Clients.All.SendAsync("ReceiveTableUpdate", $"Запись {id} удалена.");
-                await _hubContext.Clients.All.SendAsync("ReceivePasswordEntryUpdate", id, "deleted");
+                await _hubContext.Clients.All.SendAsync("RefreshTable");
             }
         }
     }
