@@ -10,7 +10,7 @@ $(document).ready(function() {
             { data: 'pass' },
             { data: 'comment' },
             {
-                data: 'id',
+                data: 'Id',
                 render: function (data, type, row) {
                     return '<a href="/EditLocPass?id=' + data + '">Edit</a>';
                 },
