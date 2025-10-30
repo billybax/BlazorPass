@@ -24,6 +24,7 @@
             .build();
 
         connection.on("RefreshTable", function () {
+            console.log("Received RefreshTable message from server.");
             refreshTableData();
         });
 
@@ -33,7 +34,18 @@
             fetch('?handler=TableData')
                 .then(response => response.text())
                 .then(html => {
-                    document.getElementById('tableContainer').innerHTML = html;
+                    // Create a temporary DOM element to hold the new HTML
+                    const tempDiv = document.createElement('div');
+                    tempDiv.innerHTML = html;
+                    // Find the new table body from the fetched HTML
+                    const newTbody = tempDiv.querySelector('#locpassTable tbody');
+                    if (newTbody) {
+                        // Find the existing table body and replace it
+                        const existingTbody = document.querySelector('#locpassTable tbody');
+                        if (existingTbody) {
+                            existingTbody.innerHTML = newTbody.innerHTML;
+                        }
+                    }
                 });
         }
     </script>
