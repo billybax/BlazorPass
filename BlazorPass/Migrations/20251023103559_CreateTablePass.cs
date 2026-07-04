@@ -11,28 +11,14 @@ namespace BlazorPass.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.CreateTable(
-                name: "LocPass",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    ResName = table.Column<string>(type: "text", nullable: true),
-                    Login = table.Column<string>(type: "text", nullable: true),
-                    Pass = table.Column<string>(type: "text", nullable: true),
-                    Comment = table.Column<string>(type: "text", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_LocPass", x => x.Id);
-                });
+            // LocPass table already exists in the database
+            // This migration documents the schema mapping for Entity Framework Core
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "LocPass");
+            // Table already exists, no rollback needed
         }
     }
 }

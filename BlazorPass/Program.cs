@@ -8,9 +8,11 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddHttpClient();
+builder.Services.AddHttpClient<GeminiService>();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddSignalR();
 builder.Services.AddScoped<PasswordEntryService>();
+builder.Services.AddScoped<GeminiService>();
 
 // Configure EF Core with PostgreSQL
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
@@ -31,8 +33,8 @@ if (!app.Environment.IsDevelopment())
 	app.UseExceptionHandler("/Error");
 	// The default HSTS value is30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
 	app.UseHsts();
+	app.UseHttpsRedirection();
 }
-app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
 
@@ -42,6 +44,33 @@ app.MapHub<TableUpdateHub>("/tableupdatehub"); // ✅ Ваш кастомный 
 app.MapGet("/", context => {
 	context.Response.Redirect("/locpass");
 	return Task.CompletedTask;
+});
+
+app.MapGet("/api/training-history", async (ApplicationDbContext db) =>
+{
+	var trainingHistory = await db.TrainingHistories
+		.Where(t => !t.IsDeleted)
+		.OrderByDescending(t => t.TrainDate)
+		.ThenByDescending(t => t.TrainTime)
+		.Select(t => new 
+		{ 
+			t.Id,
+			t.TrainDate,
+			t.TrainTime,
+			t.Minutes,
+			t.Train,
+			t.KpBefore,
+			t.KpAfter,
+			t.RFaktor,
+			t.Practise,
+			t.Sleep,
+			t.Health,
+			t.ClientId,
+			t.UpdatedAt,
+			t.IsDeleted
+		})
+		.ToListAsync();
+	return Results.Ok(trainingHistory);
 });
 
 app.UseAuthorization();
