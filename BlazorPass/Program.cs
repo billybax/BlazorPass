@@ -18,6 +18,10 @@ builder.Services.AddScoped<GeminiService>();
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseNpgsql(connectionString));
 
+// Add Swagger/OpenAPI
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
 var app = builder.Build();
 
 // Ensure database is created on startup
@@ -35,6 +39,17 @@ if (!app.Environment.IsDevelopment())
 	app.UseHsts();
 	app.UseHttpsRedirection();
 }
+else
+{
+	// Enable Swagger in Development
+	app.UseSwagger();
+	app.UseSwaggerUI(c =>
+	{
+		c.SwaggerEndpoint("/swagger/v1/swagger.json", "BlazorPass API v1");
+		c.RoutePrefix = "swagger";
+	});
+}
+
 app.UseStaticFiles();
 app.UseRouting();
 
@@ -71,7 +86,10 @@ app.MapGet("/api/training-history", async (ApplicationDbContext db) =>
 		})
 		.ToListAsync();
 	return Results.Ok(trainingHistory);
-});
+})
+.WithName("GetTrainingHistory")
+.WithDescription("Получить список всех записей истории тренировок. Отсортирован по дате и времени в обратном порядке.")
+.Produces(200);
 
 app.UseAuthorization();
 app.MapStaticAssets();
