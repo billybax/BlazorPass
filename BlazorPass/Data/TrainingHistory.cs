@@ -1,5 +1,3 @@
-using System;
-
 public class TrainingHistory
 {
     public int Id { get; set; }
