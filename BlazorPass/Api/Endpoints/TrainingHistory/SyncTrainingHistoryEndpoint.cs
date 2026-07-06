@@ -9,7 +9,7 @@ public static class SyncTrainingHistoryEndpoint
     {
         group.MapPost("/sync", SyncTrainingHistory)
             .WithName("SyncTrainingHistory")
-            .WithDescription("Синхронизировать массив записей тренировок (Upsert)")
+            .WithDescription("Синхронизировать тренировоки")
             .Accepts<SyncTrainingHistoryRequest>("application/json")
             .Produces<SyncTrainingHistoryResponse>(200)
             .Produces(400);
