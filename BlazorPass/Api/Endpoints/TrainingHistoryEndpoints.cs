@@ -12,6 +12,7 @@ public static class TrainingHistoryEndpoints
         group.MapCreateTrainingHistory();
         group.MapUpdateTrainingHistory();
         group.MapDeleteTrainingHistory();
+        group.MapSyncTrainingHistory();
     }
 }
 

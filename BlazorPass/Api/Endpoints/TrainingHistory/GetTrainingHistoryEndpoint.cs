@@ -25,6 +25,8 @@ public static class GetTrainingHistoryEndpoint
         var result = trainingHistory.Select(t => new 
         { 
             t.Id,
+            t.UserId,
+            t.LocalId,
             t.TrainDate,
             t.TrainTime,
             t.Minutes,
@@ -36,7 +38,9 @@ public static class GetTrainingHistoryEndpoint
             t.Sleep,
             t.Health,
             t.ClientId,
+            t.ClientUpdatedAt,
             t.UpdatedAt,
+            t.ServerUpdatedAt,
             t.IsDeleted
         }).ToList();
 

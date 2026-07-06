@@ -23,6 +23,8 @@ public static class CreateTrainingHistoryEndpoint
 
         var trainingHistory = new TrainingHistory
         {
+            UserId = request.UserId,
+            LocalId = request.LocalId,
             TrainDate = request.TrainDate,
             TrainTime = request.TrainTime,
             Minutes = request.Minutes,
@@ -34,7 +36,9 @@ public static class CreateTrainingHistoryEndpoint
             Sleep = request.Sleep,
             Health = request.Health,
             ClientId = request.ClientId,
+            ClientUpdatedAt = request.ClientUpdatedAt,
             UpdatedAt = DateTime.UtcNow,
+            ServerUpdatedAt = DateTime.UtcNow,
             IsDeleted = false
         };
 
@@ -44,6 +48,8 @@ public static class CreateTrainingHistoryEndpoint
         return Results.Created($"/api/training-history/{trainingHistory.Id}", new
         {
             trainingHistory.Id,
+            trainingHistory.UserId,
+            trainingHistory.LocalId,
             trainingHistory.TrainDate,
             trainingHistory.TrainTime,
             trainingHistory.Minutes,
@@ -55,7 +61,9 @@ public static class CreateTrainingHistoryEndpoint
             trainingHistory.Sleep,
             trainingHistory.Health,
             trainingHistory.ClientId,
+            trainingHistory.ClientUpdatedAt,
             trainingHistory.UpdatedAt,
+            trainingHistory.ServerUpdatedAt,
             trainingHistory.IsDeleted
         });
     }
