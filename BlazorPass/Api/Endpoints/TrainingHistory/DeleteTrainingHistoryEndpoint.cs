@@ -20,7 +20,7 @@ public static class DeleteTrainingHistoryEndpoint
         }
 
         trainingHistory.IsDeleted = true;
-        trainingHistory.UpdatedAt = DateTime.UtcNow;
+        trainingHistory.ServerUpdatedAt = DateTime.UtcNow;
 
         db.TrainingHistories.Update(trainingHistory);
         await db.SaveChangesAsync();

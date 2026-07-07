@@ -3,7 +3,6 @@ namespace BlazorPass.Api.DTOs;
 public class CreateTrainingHistoryRequest
 {
     public long UserId { get; set; }
-    public int? LocalId { get; set; }
     public DateOnly? TrainDate { get; set; }
     public TimeOnly? TrainTime { get; set; }
     public int? Minutes { get; set; }
@@ -21,7 +20,6 @@ public class CreateTrainingHistoryRequest
 public class UpdateTrainingHistoryRequest
 {
     public long? UserId { get; set; }
-    public int? LocalId { get; set; }
     public DateOnly? TrainDate { get; set; }
     public TimeOnly? TrainTime { get; set; }
     public int? Minutes { get; set; }
@@ -43,28 +41,9 @@ public class SyncTrainingHistoryRequest
 
 public class SyncTrainingHistoryResponse
 {
-    public List<int?> LocalIds { get; set; } = new();
+    public List<long?> UserIds { get; set; } = new();
     public int TotalRecords { get; set; }
     public int SuccessfulRecords { get; set; }
-}
-
-/// <summary>
-/// Запрос на дельта-синхронизацию (Pull фаза).
-/// Клиент передает время последней успешной синхронизации.
-/// </summary>
-public class PullTrainingHistoryRequest
-{
-    public string ClientId { get; set; }
-    /// <summary>
-    /// ID пользователя
-    /// </summary>
-    public long UserId { get; set; }
-
-    /// <summary>
-    /// Unix timestamp (в секундах или миллисекундах) времени последней синхронизации.
-    /// Если 0 или null, сервер вернет все записи пользователя.
-    /// </summary>
-    public long? SinceTimestamp { get; set; }
 }
 
 /// <summary>

@@ -30,8 +30,6 @@ public static class UpdateTrainingHistoryEndpoint
 
         if (request.UserId.HasValue)
             trainingHistory.UserId = request.UserId.Value;
-        if (request.LocalId.HasValue)
-            trainingHistory.LocalId = request.LocalId;
         if (request.TrainDate.HasValue)
             trainingHistory.TrainDate = request.TrainDate;
         if (request.TrainTime.HasValue)
@@ -57,7 +55,6 @@ public static class UpdateTrainingHistoryEndpoint
         if (request.ClientUpdatedAt.HasValue)
             trainingHistory.ClientUpdatedAt = request.ClientUpdatedAt.Value;
 
-        trainingHistory.UpdatedAt = DateTime.UtcNow;
         trainingHistory.ServerUpdatedAt = DateTime.UtcNow;
 
         db.TrainingHistories.Update(trainingHistory);
@@ -67,7 +64,6 @@ public static class UpdateTrainingHistoryEndpoint
         {
             trainingHistory.Id,
             trainingHistory.UserId,
-            trainingHistory.LocalId,
             trainingHistory.TrainDate,
             trainingHistory.TrainTime,
             trainingHistory.Minutes,
@@ -80,7 +76,6 @@ public static class UpdateTrainingHistoryEndpoint
             trainingHistory.Health,
             trainingHistory.ClientId,
             trainingHistory.ClientUpdatedAt,
-            trainingHistory.UpdatedAt,
             trainingHistory.ServerUpdatedAt,
             trainingHistory.IsDeleted
         });

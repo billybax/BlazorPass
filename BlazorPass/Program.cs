@@ -23,6 +23,12 @@ builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseNpgsql
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+// Добавляем конвертер глобально для Minimal APIs
+builder.Services.ConfigureHttpJsonOptions(options =>
+{
+    options.SerializerOptions.Converters.Add(new UniversalSystemDateTimeConverter());
+});
+
 var app = builder.Build();
 
 // Ensure database is created on startup

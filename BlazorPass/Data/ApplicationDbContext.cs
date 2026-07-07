@@ -28,7 +28,6 @@ public class ApplicationDbContext : DbContext
 	 entity.HasKey(e => e.Id);
 	 entity.Property(e => e.Id).HasColumnName("id");
 	 entity.Property(e => e.UserId).HasColumnName("user_id");
-	 entity.Property(e => e.LocalId).HasColumnName("local_id");
 	 entity.Property(e => e.TrainDate).HasColumnName("trainDate").HasColumnType("date");
 	 entity.Property(e => e.TrainTime).HasColumnName("trainTime").HasColumnType("time");
 	 entity.Property(e => e.Minutes).HasColumnName("minutes");
@@ -41,12 +40,11 @@ public class ApplicationDbContext : DbContext
 	 entity.Property(e => e.Health).HasColumnName("health").HasColumnType("text");
 	 entity.Property(e => e.ClientId).HasColumnName("client_id").HasColumnType("text");
 	 entity.Property(e => e.ClientUpdatedAt).HasColumnName("client_updated_at").HasColumnType("timestamp with time zone");
-	 entity.Property(e => e.UpdatedAt).HasColumnName("updated_at").HasColumnType("timestamp with time zone");
 	 entity.Property(e => e.ServerUpdatedAt).HasColumnName("server_updated_at").HasColumnType("timestamp with time zone").HasDefaultValueSql("now()");
 	 entity.Property(e => e.IsDeleted).HasColumnName("is_deleted").HasDefaultValue(false);
 	 entity.HasIndex(e => e.UserId).HasDatabaseName("idx_training_history_user_id");
 	 entity.HasIndex(e => e.ServerUpdatedAt).HasDatabaseName("idx_training_history_server_updated_at");
-	 entity.HasIndex(e => new { e.UserId, e.LocalId }).HasDatabaseName("idx_training_history_user_local_id").IsUnique();
+	 entity.HasIndex(e => new { e.UserId, e.ClientId }).HasDatabaseName("idx_training_history_user_client_id").IsUnique();
  });
 
  base.OnModelCreating(modelBuilder);

@@ -25,7 +25,7 @@ public static class SyncTrainingHistoryEndpoint
         var response = new SyncTrainingHistoryResponse
         {
             TotalRecords = request.Records.Count,
-            LocalIds = new List<int?>()
+            UserIds = new List<long?>()
         };
 
         try
@@ -36,7 +36,7 @@ public static class SyncTrainingHistoryEndpoint
                 var result = await UpsertTrainingHistoryRecord(db, record);
                 if (result.HasValue)
                 {
-                    response.LocalIds.Add(result);
+                    response.UserIds.Add(result);
                     response.SuccessfulRecords++;
                 }
             }
@@ -49,11 +49,11 @@ public static class SyncTrainingHistoryEndpoint
         }
     }
 
-    private static async Task<int?> UpsertTrainingHistoryRecord(ApplicationDbContext db, CreateTrainingHistoryRequest record)
+    private static async Task<long?> UpsertTrainingHistoryRecord(ApplicationDbContext db, CreateTrainingHistoryRequest record)
     {
         // Проверяем, существует ли запись с таким (user_id, local_id)
         var existingRecord = await db.TrainingHistories
-            .FirstOrDefaultAsync(x => x.UserId == record.UserId && x.LocalId == record.LocalId);
+            .FirstOrDefaultAsync(x => x.ClientId == record.ClientId && x.UserId == record.UserId);
 
         if (existingRecord != null)
         {
@@ -72,14 +72,14 @@ public static class SyncTrainingHistoryEndpoint
                 existingRecord.Health = record.Health;
                 existingRecord.ClientId = record.ClientId;
                 existingRecord.ClientUpdatedAt = record.ClientUpdatedAt;
-                existingRecord.UpdatedAt = DateTime.UtcNow;
+                existingRecord.ServerUpdatedAt = DateTime.UtcNow;
                 existingRecord.IsDeleted = false;
 
                 db.TrainingHistories.Update(existingRecord);
                 await db.SaveChangesAsync();
             }
 
-            return existingRecord.LocalId;
+            return existingRecord.UserId;
         }
         else
         {
@@ -87,7 +87,6 @@ public static class SyncTrainingHistoryEndpoint
             var newRecord = new TrainingHistory
             {
                 UserId = record.UserId,
-                LocalId = record.LocalId,
                 TrainDate = record.TrainDate,
                 TrainTime = record.TrainTime,
                 Minutes = record.Minutes,
@@ -100,7 +99,6 @@ public static class SyncTrainingHistoryEndpoint
                 Health = record.Health,
                 ClientId = record.ClientId,
                 ClientUpdatedAt = record.ClientUpdatedAt,
-                UpdatedAt = DateTime.UtcNow,
                 ServerUpdatedAt = DateTime.UtcNow,
                 IsDeleted = false
             };
@@ -108,7 +106,7 @@ public static class SyncTrainingHistoryEndpoint
             db.TrainingHistories.Add(newRecord);
             await db.SaveChangesAsync();
 
-            return newRecord.LocalId;
+            return newRecord.UserId;
         }
     }
 }
